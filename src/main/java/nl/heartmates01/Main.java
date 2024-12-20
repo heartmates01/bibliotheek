@@ -102,111 +102,162 @@ class Bibliotheek {
              \s
              Library Management System
              \s
-             1 = Show a book's information
-             2 = Add a book
-             3 = Remove a book
-             4 = Borrow a book
-             5 = Return a book
-             6 = Show all book information
-             7 = Show all borrowed books
-             8 = Show all available books
-             9 = Exit
+             1. Manage Singular Book
+             2. Manage Multiple Books
+             3. Exit
             """);
 
-        String userChoice = userInput("Choose an option from the list:", Pattern.compile("[0-9]"),
+        String userChoice = userInput("Choose an option from the list:", Pattern.compile("[0-3]"),
             "Choose a valid option");
 
         switch (userChoice) {
 
-          case "9":
+          case "3":
             System.out.println("Exiting.");
             return;
 
           case "1":
-            manageShowBook();
+            manageSingular();
             break;
 
           case "2":
-            manageNewBook();
-            break;
+            manageMultiple();
+        }
+      }
+    }
 
-          case "3":
-            manageRemoveBook();
-            break;
+    static void manageSingular() {
+      while (true) {
+        System.out.println("""
+             \s
+             Library Management System
+             \s
+             1. Add
+             2. Remove
+             3. Show
+             4. Borrow or Return
+             5. Exit
+            """);
 
-          case "4":
-            manageBorrowBook();
-            break;
+        String userChoice = userInput("Choose an option from the list:", Pattern.compile("[0-5]"),
+            "Choose a valid option");
 
+        switch (userChoice) {
           case "5":
-            manageReturnBook();
+            return;
+          case "1":
+            addBook();
             break;
-
-          case "6":
-            manageShowBooks();
+          case "2":
+            removeBook();
             break;
-
-          case "7":
-            manageShowBorrowedBooks();
+          case "3":
+            showBook();
             break;
-
-          case "8":
-            manageShowAvailableBooks();
+          case "4":
+            int ID = Integer.parseInt(
+                userInput("Book ID:", Pattern.compile("\\d+"), "Invalid ID."));
+            Book book = Library.findID(ID);
+            borrowOrReturn(book);
             break;
         }
       }
     }
 
+    static void manageMultiple() {
+      while (true) {
+        System.out.println("""
+             \s
+             Library Management System
+             \s
+             1. Show All
+             2. Show All Available
+             3. Show All Borrowed
+             4. Exit
+            """);
 
-    static void manageNewBook() {
+        String userChoice = userInput("Choose an option from the list:", Pattern.compile("[0-4]"),
+            "Choose a valid option");
+        switch (userChoice) {
+          case "4":
+            return;
+          case "1":
+            showBooks();
+            break;
+          case "2":
+            showAvailable();
+            break;
+          case "3":
+            showBorrowed();
+            break;
+        }
+      }
+    }
+
+    static void addBook() {
       long id = Long.parseLong(
-          userInput("The ID of the book? (10 int)", Pattern.compile("\\d{10}"), "Invalid ID."));
-      String title = userInput("The title of the book?", null, null);
-      String author = userInput("The author of this book?", null, null);
+          userInput("Book ID (10 int): ", Pattern.compile("\\d{10}"), "Invalid ID."));
+      String title = userInput("Book Title: ", null, null);
+      String author = userInput("Book Author: ", null, null);
       int pages = Integer.parseInt(
-          userInput("Number of pages in this book?", Pattern.compile("\\d+"),
+          userInput("Number of Pages: ", Pattern.compile("\\d+"),
               "Invalid number of pages"));
-      String isbn = userInput("ISBN of this book? (13 int)", Pattern.compile("\\d{13}"),
+      String isbn = userInput("Book ISBN (13 int)", Pattern.compile("\\d{13}"),
           "Invalid ISBN");
       boolean borrowed = Boolean.parseBoolean(
-          userInput("Currently being borrowed? (true/false)", null, null));
-
+          userInput("Currently being borrowed(T/F): ", Pattern.compile("true|True|false|False"),
+              "Invalid input."));
       library.addBook(id, title, author, pages, isbn, borrowed);
     }
 
-    static void manageShowBook() {
-      long id = Long.parseLong(userInput("The ID of the book?", Pattern.compile("\\d{10}"),
-          "Invalid ID, or not in list."));
-      System.out.println(library.showBook(id));
-    }
-
-    static void manageRemoveBook() {
+    static void removeBook() {
       long id = Long.parseLong(userInput("The ID of the book?", Pattern.compile("\\d{10}"),
           "Invalid ID, or not in list."));
       library.removeBook(id);
     }
 
-    static void manageBorrowBook() {
-      long id = Long.parseLong(
-          userInput("The ID of the book?", Pattern.compile("\\d{10}"), "Invalid ID."));
-      library.borrowBook(id);
+    static void showBook() {
+      long id = Long.parseLong(userInput("The ID of the book?", Pattern.compile("\\d{10}"),
+          "Invalid ID, or not in list."));
+      System.out.println(library.showBook(id));
     }
 
-    static void manageReturnBook() {
-      long id = Long.parseLong(
-          userInput("The ID of the book?", Pattern.compile("\\d{10}"), "Invalid ID."));
-      library.returnBook(id);
+    static void borrowOrReturn(Book book) {
+      System.out.println("""
+          \s
+          Library Management System
+          \s
+          1. Borrow
+          2. Return
+          3. Exit to previous menu.""");
+
+      int borrowOrReturn = Integer.parseInt(
+          userInput("Choose an option from the list.", Pattern.compile("[0-3]"),
+              "Choose a valid option."));
+
+      if (borrowOrReturn == 3) {
+        System.out.println("Exiting to magazine menu.");
+        return;
+
+      } else if (borrowOrReturn == 1) {
+        Book.borrowBook(book);
+        System.out.println("Book has been borrowed.");
+
+      } else if (borrowOrReturn == 2) {
+        Book.returnBook(book);
+        System.out.println("Book has been returned.");
+      }
     }
 
-    static void manageShowBooks() {
+    static void showBooks() {
       System.out.println(library.showBooks());
     }
 
-    static void manageShowBorrowedBooks() {
+    static void showBorrowed() {
       System.out.println(library.showBorrowedBooks());
     }
 
-    static void manageShowAvailableBooks() {
+    static void showAvailable() {
       System.out.println(library.showAvailableBooks());
     }
   }
