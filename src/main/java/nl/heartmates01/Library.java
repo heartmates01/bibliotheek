@@ -77,37 +77,37 @@ class Library {
 
   // Deze method geeft alle boeken in de books List terug als een String,
   // per book de Titel en de Auteur.
-  String showBooks() {
-    String showAllBooks = "";
+  String getBooks() {
+    String result = "";
     for (Book book : allBooks) {
-      showAllBooks = book.getTitleWithAuthor();
+      result = book.getTitleWithAuthor();
     }
-    return showAllBooks;
+    return result;
   }
 
   // Deze method geeft alle geleende boeken in de books List terug als een String,
   // per book de Titel en de Auteur.
-  String showBorrowedBooks() {
-    String showAllBorrowedBooks = "";
+  String getBorrowed() {
+    String result = "";
     for (Book book : allBooks) {
       if (book.hasBeenBorrowed()) {
-        showAllBorrowedBooks += book.getTitleWithAuthor();
-        return showAllBorrowedBooks;
+        result += book.getTitleWithAuthor();
+        return result;
       }
     }
-    return showAllBorrowedBooks;
+    return result;
   }
 
   // Deze method geeft alle beschikbare boeken in de books List terug als een String,
   // per book de Titel en de Auteur.
-  String showAvailableBooks() {
-    String showAllAvailableBooks = "";
+  String getAvailable() {
+    String result = "";
     for (Book book : allBooks) {
       if (!book.hasBeenBorrowed()) {
-        showAllAvailableBooks += book.getTitleWithAuthor();
-        return showAllAvailableBooks;
+        result += book.getTitleWithAuthor();
+        return result;
       }
     }
-    return showAllAvailableBooks;
+    return result;
   }
 }
