@@ -57,7 +57,7 @@ class Book {
   private final String author;
   private final int pages;
   private final String isbn;
-  private boolean borrowed;
+  private static boolean borrowed;
 
   Book(long id, String title, String author, int pages, String isbn, boolean borrowed) {
 
@@ -66,7 +66,7 @@ class Book {
     this.author = author;
     this.pages = pages;
     this.isbn = isbn;
-    this.borrowed = borrowed;
+    Book.borrowed = borrowed;
   }
 
   long getId() {
@@ -80,25 +80,26 @@ class Book {
 
   // Deze method geeft de titel en de auteur van het boek terug als een String.
   public String getTitleWithAuthor() {
-    return title + "\n" + author + "\n" + "\n";
+    return "\n" + title + "\n" + author + "\n";
   }
 
   // Deze method geeft alle informatie van het boek terug als een String
 // (tip: gebruik een String template """).'
   public String toString() {
-    return id + "\n" + title + "\n" + author + "\n" + pages + "\n" + isbn + "\n" + borrowed + "\n"
+    return "\n" + "ID = " + id + "\n" + "Title = " + title + "\n" + "Author = " + author + "\n"
+        + "Pages = " + pages + "\n" + "ISBN = " + isbn + "\n" + "Borrowed = " + borrowed + "\n"
         + "\n";
   }
 
   // void borrowBook()
 // Deze method zet de borrowed waarde op true.
-  void borrowBook() {
+  static void borrowBook(Book book) {
     borrowed = true;
   }
 
   // void returnBook()
 // Deze method zet de borrowed waarde op false.
-  void returnBook() {
+  static void returnBook(Book book) {
     borrowed = false;
   }
 }
