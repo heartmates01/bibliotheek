@@ -41,14 +41,14 @@ class Library {
 
   // deze method maakt een nieuw Book object aan en voegt deze toe aan de books List.
 
-  List<Book> allBooks = new ArrayList<>();
+  static List<Book> allBooks = new ArrayList<>();
 
   void addBook(long id, String title, String author, int pages, String isbn, boolean borrowed) {
     allBooks.add(new Book(id, title, author, pages, isbn, borrowed));
   }
 
   // zoekt id van book
-  Book findID(long id) {
+  static Book findID(long id) {
     for (Book book : allBooks) {
       if (id == book.getId()) {
         return book;
@@ -56,7 +56,6 @@ class Library {
     }
     return null;
   }
-
 
   // Deze method zoekt het boek op in de books List en verwijderd deze uit de List.
   void removeBook(long id) {
@@ -76,32 +75,16 @@ class Library {
     return "Book not in list.";
   }
 
-  // Deze method zoekt het boek op in de books List en zet de borrowed waarde op true.
-  void borrowBook(long id) {
-    Book trueBorrowedBook = findID(id);
-    if (trueBorrowedBook != null) {
-      trueBorrowedBook.borrowBook();
-    }
-  }
-
-  // Deze method zoekt het boek op in de books List en zet de borrowed waarde op false.
-  void returnBook(long id) {
-    Book falseBorrowedBook = findID(id);
-    if (falseBorrowedBook != null) {
-      falseBorrowedBook.returnBook();
-    }
-  }
-
   // Deze method geeft alle boeken in de books List terug als een String,
   // per book de Titel en de Auteur.
   String showBooks() {
     String showAllBooks = "";
     for (Book book : allBooks) {
-      showAllBooks += book.getTitleWithAuthor();
+      showAllBooks = book.getTitleWithAuthor();
     }
     return showAllBooks;
   }
-  
+
   // Deze method geeft alle geleende boeken in de books List terug als een String,
   // per book de Titel en de Auteur.
   String showBorrowedBooks() {
@@ -128,4 +111,3 @@ class Library {
     return showAllAvailableBooks;
   }
 }
-
